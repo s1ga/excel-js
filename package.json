@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/s1ga/excel-js#readme",
   "private": true,
-  "browserslist": [">0.25", "not dead"],
+  "browserslist": [">0.25%", "not dead"],
   "devDependencies": {
     "@babel/core": "^7.12.7",
     "@babel/preset-env": "^7.12.7",
