@@ -12,6 +12,7 @@
 <body>
     <div id="app" class="container">
         <div class="excel">
+
             <div class="excel__header">
                 <input type="text" class="excel__header__input" value="Новая таблица" />
                 <div class="excel__header__wrapper__btn">
@@ -25,16 +26,74 @@
             </div>
 
             <div class="excel__toolbar">
+                <div class="excel__toolbar__btn">
+                    <i class="material-icons">format_align_left</i>
+                </div>
 
+                <div class="excel__toolbar__btn">
+                    <i class="material-icons">format_align_center</i>
+                </div>
+
+                <div class="excel__toolbar__btn">
+                    <i class="material-icons">format_align_right</i>
+                </div>
+
+                <div class="excel__toolbar__btn">
+                    <i class="material-icons">format_bold</i>
+                </div>
+
+                <div class="excel__toolbar__btn">
+                    <i class="material-icons">format_italic</i>
+                </div>
+
+                <div class="excel__toolbar__btn">
+                    <i class="material-icons">format_underline</i>
+                </div>
             </div>
 
             <div class="excel__formula">
-
+                <div class="excel__formula__info">fx</div>
+                <div class="excel__formula__input" contenteditable="true" spellcheck="false"></div>
             </div>
 
             <div class="excel__table">
 
+                <div class="excel__table__row">
+
+                    <div class="excel__table__row__info">
+
+                    </div>
+
+                    <div class="excel__table__row__data">
+                        <div class="excel__table__row__data__column">
+                            A
+                        </div>
+                        <div class="excel__table__row__data__column">
+                            B
+                        </div>
+                        <div class="excel__table__row__data__column">
+                            C
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="excel__table__row">
+
+                    <div class="excel__table__row__info">
+                        1
+                    </div>
+
+                    <div class="excel__table__row__data">
+                        <div class="excel__table__row__data__cell selected" contenteditable="true"></div>
+                        <div class="excel__table__row__data__cell" contenteditable="true"></div>
+                        <div class="excel__table__row__data__cell" contenteditable="true"></div>
+                    </div>
+
+                </div>
+
             </div>
+
         </div>
     </div>
 </body>
