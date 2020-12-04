@@ -12,7 +12,8 @@
     "linebreak-style": "off",
     "indent": "off",
     "comma-dangle": "off",
-    "no-trailing-spaces": "off"
+    "no-trailing-spaces": "off",
+    "max-len": "off"
   },
   "extends": ["eslint:recommended", "google"]
 }
