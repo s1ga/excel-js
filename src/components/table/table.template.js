@@ -3,11 +3,11 @@ const CODES = {
     Z: 90
 }
 
-// function createCell() {
-//     return `
-//         <div class="excel__table__row__data__cell" contenteditable="true"></div>
-//     `
-// }
+function createCell() {
+    return `
+        <div class="excel__table__row__data__cell" contenteditable="true"></div>
+    `
+}
 
 function createCol(content) {
     return `
@@ -15,10 +15,10 @@ function createCol(content) {
     `
 }
 
-function createRow(content) {
+function createRow(index, content) {
     return `
         <div class="excel__table__row">
-            <div class="excel__table__row__info"></div>
+            <div class="excel__table__row__info">${index ? index : ''}</div>
             <div class="excel__table__row__data">${content}</div>
         </div>
     `
@@ -37,9 +37,13 @@ export function createTable(rowsCount = 15) {
         .map(createCol)
         .join('')
 
-    rows.push(createRow(cols))
-    for (let i = 0; i < rowsCount; i++) {
-        rows.push(createRow())
+    rows.push(createRow(null, cols))
+    for (let i = 1; i <= rowsCount; i++) {
+        const cells = new Array(colsCount)
+            .fill('')
+            .map(createCell)
+            .join('')
+        rows.push(createRow(i, cells))
     }
 
     return rows.join('')
