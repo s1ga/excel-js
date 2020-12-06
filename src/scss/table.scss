@@ -25,6 +25,28 @@
     border: 1px solid $border-color;
     background: #f8f9fa;
     border-top: none;
+    position: relative;
+  }
+
+  .excel__table__row__info-resize, .excel__table__row__data__column-resize {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: $outline-color;
+    opacity: 0;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  .excel__table__row__info-resize {
+    left: 0;
+    height: 3px;
+
+    &:hover {
+      cursor: row-resize;
+    }
   }
 
   .excel__table__row__data {
@@ -32,6 +54,7 @@
   }
 
   .excel__table__row__data__column {
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -42,6 +65,15 @@
     border-top: 0;
     border-left: 0;
     height: 100%;
+  }
+
+  .excel__table__row__data__column-resize {
+    top: 0;
+    width: 4px;
+
+    &:hover {
+      cursor: col-resize;
+    }
   }
 
   .excel__table__row__data__cell {
@@ -58,7 +90,7 @@
 
     &.selected {
       border: none;
-      outline: 2px solid #3c74ff;
+      outline: 2px solid $outline-color;
       z-index: 2;
     }
   }
