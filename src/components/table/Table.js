@@ -31,12 +31,12 @@ export class Table extends ExcelComponent {
                     const value = (coords.width + delta)
 
                     cells.forEach(cell => cell.style.width = value + 'px')
-                    $parent.$el.style.width = value + 'px'
+                    $parent.css({width: value + 'px'})
                 } else {
                     const delta = e.pageY - coords.bottom
                     const value = (coords.height + delta)
 
-                    $parent.$el.style.height = value + 'px'
+                    $parent.css({height: value + 'px'})
                 }
             }
 
