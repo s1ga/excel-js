@@ -21,8 +21,8 @@ function createCol(content, index) {
 function createRow(index, content) {
     const resize = index ? `<div class="excel__table__row__info-resize" data-resize="row"></div>` : ''
     return `
-        <div class="excel__table__row">
-            <div class="excel__table__row__info" data-type="resizable">
+        <div class="excel__table__row"  data-type="resizable">
+            <div class="excel__table__row__info">
                 ${index ? index : ''}
                 ${resize}
             </div>

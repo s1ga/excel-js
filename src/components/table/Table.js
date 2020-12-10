@@ -17,25 +17,32 @@ export class Table extends ExcelComponent {
 
     onMousedown(event) {
         const resize = event.target.dataset.resize
-        if (resize === 'col') {
+        if (resize) {
             const $resizer = $(event.target)
             const $parent = $resizer.closest('[data-type="resizable"]')
             const coords = $parent.getCoords()
 
+            const col = $parent.data.col
+            const cells = this.$root.findAll(`[data-col="${col}"]`)
+
             document.onmousemove = e => {
-               const delta = e.pageX - coords.right
-               const value = (coords.width + delta) + 'px'
-               const col = $parent.data.col
+                if (resize === 'col') {
+                    const delta = e.pageX - coords.right
+                    const value = (coords.width + delta)
 
-               document.querySelectorAll(`[data-col="${col}"]`)
-                   .forEach(cell => cell.style.width = value)
+                    cells.forEach(cell => cell.style.width = value + 'px')
+                    $parent.$el.style.width = value + 'px'
+                } else {
+                    const delta = e.pageY - coords.bottom
+                    const value = (coords.height + delta)
 
-               $parent.$el.style.width = value
+                    $parent.$el.style.height = value + 'px'
+                }
             }
 
             document.onmouseup = () => {
-               document.onmousemove = null
+                document.onmousemove = null
             }
-       }
+        }
     }
 }
