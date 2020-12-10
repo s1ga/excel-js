@@ -3,26 +3,26 @@ const CODES = {
     Z: 90
 }
 
-function createCell() {
+function createCell(_, col) {
     return `
-        <div class="excel__table__row__data__cell" contenteditable="true"></div>
+        <div class="excel__table__row__data__cell" data-col="${col}" contenteditable="true"></div>
     `
 }
 
-function createCol(content) {
+function createCol(content, index) {
     return `
-        <div class="excel__table__row__data__column">
+        <div class="excel__table__row__data__column" data-type="resizable" data-col="${index}">
             ${content}
-            <div class="excel__table__row__data__column-resize"></div>
+            <div class="excel__table__row__data__column-resize" data-resize="col"></div>
         </div>       
     `
 }
 
 function createRow(index, content) {
-    const resize = index ? `<div class="excel__table__row__info-resize"></div>` : ''
+    const resize = index ? `<div class="excel__table__row__info-resize" data-resize="row"></div>` : ''
     return `
         <div class="excel__table__row">
-            <div class="excel__table__row__info">
+            <div class="excel__table__row__info" data-type="resizable">
                 ${index ? index : ''}
                 ${resize}
             </div>
