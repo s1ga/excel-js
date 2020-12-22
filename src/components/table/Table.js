@@ -2,6 +2,7 @@ import {ExcelComponent} from '@core/ExcelComponent';
 import {createTable} from '@/components/table/table.template';
 import {tableResizeHandler} from '@/components/table/table.resize';
 import {TableSelection} from '@/components/table/TableSelection';
+import {matrix} from '@/components/table/table.functions';
 import {$} from '@core/dom';
 
 export class Table extends ExcelComponent {
@@ -35,7 +36,15 @@ export class Table extends ExcelComponent {
         if (resize) {
             tableResizeHandler(resize, this.$root, event)
         } else if (eventType === 'cell') {
-            this.selection.select($(event.target))
+            const $target = $(event.target)
+            if (event.shiftKey) {
+                const $cells = matrix($target, this.selection.current).map(id => this.$root.find(`[data-id="${id}"]`))
+                this.selection.selectGroup($cells)
+            } else {
+                this.selection.select($target)
+            }
         }
     }
 }
+
+

@@ -3,6 +3,7 @@ export class TableSelection {
 
     constructor() {
         this.group = []
+        this.current = null
     }
 
     clear() {
@@ -12,10 +13,13 @@ export class TableSelection {
     select($el) {
         this.clear()
         this.group.push($el)
+        this.current = $el
         $el.addClass(TableSelection.className)
     }
 
-    selectGroup() {
-
+    selectGroup($group = []) {
+        this.clear()
+        this.group = $group
+        $group.forEach($el => $el.addClass(TableSelection.className))
     }
 }
