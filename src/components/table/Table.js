@@ -1,6 +1,8 @@
 import {ExcelComponent} from '@core/ExcelComponent';
 import {createTable} from '@/components/table/table.template';
 import {tableResizeHandler} from '@/components/table/table.resize';
+import {TableSelection} from '@/components/table/TableSelection';
+import {$} from '@core/dom';
 
 export class Table extends ExcelComponent {
     static className = 'excel__table'
@@ -15,10 +17,25 @@ export class Table extends ExcelComponent {
         return createTable()
     }
 
+    prepare() {
+        this.selection = new TableSelection()
+    }
+
+    init() {
+        super.init()
+
+        const $cell = this.$root.find('[data-id="1:0"]')
+        this.selection.select($cell)
+    }
+
     onMousedown(event) {
+        const eventType = event.target.dataset.type
         const resize = event.target.dataset.resize
+
         if (resize) {
             tableResizeHandler(resize, this.$root, event)
+        } else if (eventType === 'cell') {
+            this.selection.select($(event.target))
         }
     }
 }
