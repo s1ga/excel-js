@@ -21,27 +21,48 @@ export class Table extends ExcelComponent {
             const $resizer = $(event.target)
             const $parent = $resizer.closest('[data-type="resizable"]')
             const coords = $parent.getCoords()
+            const sideProp = resize === 'col' ? 'bottom' : 'right'
+            let value = 0
 
             const col = $parent.data.col
             const cells = this.$root.findAll(`[data-col="${col}"]`)
 
+            $resizer.css({
+                opacity: 1,
+                zIndex: 10,
+                [sideProp]: '-5000px'
+            })
+
             document.onmousemove = e => {
                 if (resize === 'col') {
                     const delta = e.pageX - coords.right
-                    const value = (coords.width + delta)
+                    value = (coords.width + delta)
 
-                    cells.forEach(cell => cell.style.width = value + 'px')
-                    $parent.css({width: value + 'px'})
+                    $resizer.css({right: -delta + 'px'})
                 } else {
                     const delta = e.pageY - coords.bottom
-                    const value = (coords.height + delta)
+                    value = (coords.height + delta)
 
-                    $parent.css({height: value + 'px'})
+                    $resizer.css({bottom: -delta + 'px'})
                 }
             }
 
             document.onmouseup = () => {
                 document.onmousemove = null
+                document.onmouseup = null
+
+                if (resize === 'col') {
+                    cells.forEach(cell => cell.style.width = value + 'px')
+                    $parent.css({width: value + 'px'})
+                } else {
+                    $parent.css({height: value + 'px'})
+                }
+
+                $resizer.css({
+                    opacity: 0,
+                    right: 0,
+                    bottom: 0
+                })
             }
         }
     }
