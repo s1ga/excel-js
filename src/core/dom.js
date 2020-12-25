@@ -34,6 +34,10 @@ class Dom {
         return this
     }
 
+    text(text) {
+        this.$el.textContent = text
+    }
+
     find(selector) {
         return $(this.$el.querySelector(selector))
     }
