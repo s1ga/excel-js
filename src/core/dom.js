@@ -38,6 +38,11 @@ class Dom {
         return $(this.$el.querySelector(selector))
     }
 
+    focus() {
+        this.$el.focus()
+        return this
+    }
+
     findAll(selector) {
         return this.$el.querySelectorAll(selector)
     }
