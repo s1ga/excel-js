@@ -13,7 +13,7 @@ export class Formula extends ExcelComponent {
 
     onInput(event) {
         const text = event.target.innerText.trim()
-        this.emitter.emit('it', text)
+        this.$emit('formula:input', text)
     }
 
     toHTML() {
