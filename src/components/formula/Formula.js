@@ -6,9 +6,23 @@ export class Formula extends ExcelComponent {
     constructor($root, options) {
         super($root, {
             name: 'Formula',
-            listeners: ['input'],
+            listeners: ['input', 'keydown'],
             ...options
         })
+    }
+
+    init() {
+        super.init()
+
+        const $input = this.$root.find('[data-type="input"]')
+        this.$on('table:input', text => $input.text(text))
+    }
+
+    onKeydown(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault()
+            this.$emit('formula:enter')
+        }
     }
 
     onInput(event) {
@@ -19,7 +33,7 @@ export class Formula extends ExcelComponent {
     toHTML() {
         return `
             <div class="excel__formula__info">fx</div>
-            <div class="excel__formula__input" contenteditable="true" spellcheck="false"></div>
+            <div class="excel__formula__input" data-type="input" contenteditable="true" spellcheck="false"></div>
         `
     }
 }

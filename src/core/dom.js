@@ -35,7 +35,12 @@ class Dom {
     }
 
     text(text) {
-        this.$el.textContent = text
+        if (text) {
+            this.$el.textContent = text
+            return this
+        }
+
+        return this.$el.textContent.trim()
     }
 
     find(selector) {

@@ -11,7 +11,7 @@ export class Table extends ExcelComponent {
     constructor($root, options) {
         super($root, {
             name: 'Table',
-            listeners: ['mousedown', 'keydown'],
+            listeners: ['mousedown', 'keydown', 'input'],
             ...options
         })
     }
@@ -31,6 +31,12 @@ export class Table extends ExcelComponent {
         this.selection.select($cell)
 
         this.$on('formula:input', text => this.selection.current.text(text))
+        this.$on('formula:enter', () => this.selection.current.focus())
+    }
+
+    onInput(event) {
+        const text = event.target.textContent.trim()
+        this.$emit('table:input', text)
     }
 
     onMousedown(event) {
