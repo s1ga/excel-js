@@ -32,6 +32,8 @@ export class Table extends ExcelComponent {
 
         this.$on('formula:input', text => this.selection.current.text(text))
         this.$on('formula:enter', () => this.selection.current.focus())
+
+        this.$subscribe(state => console.log('Table state: ', state))
     }
 
     selectCell($cell) {
@@ -55,7 +57,7 @@ export class Table extends ExcelComponent {
                 const $cells = matrix($target, this.selection.current).map(id => this.$root.find(`[data-id="${id}"]`))
                 this.selection.selectGroup($cells)
             } else {
-                this.selection.select($target)
+                this.selectCell($target)
             }
         }
     }

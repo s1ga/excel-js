@@ -5,7 +5,10 @@ export class ExcelComponent extends DOMListener {
         super($root, options.listeners)
         this.name = options.name || ''
         this.emitter = options.emitter
+        this.store = options.store
         this.unsubs = []
+        this.storeSub = null
+
         this.prepare()
     }
 
@@ -16,6 +19,14 @@ export class ExcelComponent extends DOMListener {
     $on(event, fn) {
         const unsub = this.emitter.subscribe(event, fn)
         this.unsubs.push(unsub)
+    }
+
+    $dispatch(action) {
+        this.store.dispatch(action)
+    }
+
+    $subscribe(fn) {
+        this.storeSub = this.store.subscribe(fn)
     }
 
     // настройка компонента до init
@@ -30,6 +41,7 @@ export class ExcelComponent extends DOMListener {
     remove() {
         this.removeDOMListeners()
         this.unsubs.forEach(unsub => unsub())
+        this.storeSub.unsubscribe()
     }
 
     // return component template
