@@ -18,7 +18,7 @@ export class Table extends ExcelComponent {
     }
 
     toHTML() {
-        return createTable()
+        return createTable(20, this.store.getState())
     }
 
     prepare() {
@@ -42,10 +42,6 @@ export class Table extends ExcelComponent {
         this.$emit('table:select', $cell)
     }
 
-    onInput(event) {
-        this.$emit('table:input', $(event.target).text())
-    }
-
     async resizeTable(event) {
         try {
             const data = await tableResizeHandler(this.$root, event)
@@ -55,11 +51,15 @@ export class Table extends ExcelComponent {
         }
     }
 
-    onMousedown(event) {
+    onInput(event) {
+        this.$emit('table:input', $(event.target).text())
+    }
+
+    async onMousedown(event) {
         const eventType = event.target.dataset.type
 
         if (event.target.dataset.resize) {
-            this.resizeTable(event)
+            await this.resizeTable(event)
         } else if (eventType === 'cell') {
             const $target = $(event.target)
             if (event.shiftKey) {

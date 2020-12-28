@@ -3,29 +3,27 @@ const CODES = {
     Z: 90
 }
 
-// function createCell(row, col) {
-//     return `
-//         <div class="excel__table__row__data__cell" data-row="${row}" data-col="${col}" contenteditable="true"></div>
-//     `
-// }
+const DEFAULT_WIDTH = 120
 
-function createCell(row) {
+function createCell(state, row) {
     return function(_, col) {
+        const width = getWidth(state.colState, col)
         return `
             <div 
                 class="excel__table__row__data__cell" 
                 data-id="${row}:${col}" 
                 data-type="cell"
                 data-col="${col}" 
+                style="width: ${width}"
                 contenteditable="true"
              ></div>
         `
     }
 }
 
-function createCol(content, index) {
+function createCol({content, index, width}) {
     return `
-        <div class="excel__table__row__data__column" data-type="resizable" data-col="${index}">
+        <div class="excel__table__row__data__column" data-type="resizable" data-col="${index}" style="width: ${width}">
             ${content}
             <div class="excel__table__row__data__column-resize" data-resize="col"></div>
         </div>       
@@ -49,12 +47,27 @@ function toChar(_, index) {
     return String.fromCharCode(CODES.A + index)
 }
 
-export function createTable(rowsCount = 15) {
+function getWidth(state, index) {
+    return (state[index] || DEFAULT_WIDTH) + 'px'
+}
+
+function withWidthFrom(state) {
+    return function(content, index) {
+        return {
+            content,
+            index,
+            width: getWidth(state.colState, index)
+        }
+    }
+}
+
+export function createTable(rowsCount = 15, state = {}) {
     const colsCount = CODES.Z - CODES.A + 1
     const rows = []
     const cols = new Array(colsCount)
         .fill('')
         .map(toChar)
+        .map(withWidthFrom(state))
         .map(createCol)
         .join('')
 
@@ -62,8 +75,7 @@ export function createTable(rowsCount = 15) {
     for (let row = 1; row <= rowsCount; row++) {
         const cells = new Array(colsCount)
             .fill('')
-            // .map((_, col) => createCell(row, col))
-            .map(createCell(row))
+            .map(createCell(state, row))
             .join('')
         rows.push(createRow(row, cells))
     }
