@@ -1,9 +1,10 @@
-import {ExcelComponent} from '@core/ExcelComponent';
-import {createTable} from '@/components/table/table.template';
-import {tableResizeHandler} from '@/components/table/table.resize';
-import {TableSelection} from '@/components/table/TableSelection';
-import {matrix, nextSelector} from '@/components/table/table.functions';
-import {$} from '@core/dom';
+import {ExcelComponent} from '@core/ExcelComponent'
+import {createTable} from '@/components/table/table.template'
+import {tableResizeHandler} from '@/components/table/table.resize'
+import {TableSelection} from '@/components/table/TableSelection'
+import {matrix, nextSelector} from '@/components/table/table.functions'
+import {$} from '@core/dom'
+import * as actions from '@/store/actions'
 
 export class Table extends ExcelComponent {
     static className = 'excel__table'
@@ -33,7 +34,7 @@ export class Table extends ExcelComponent {
         this.$on('formula:input', text => this.selection.current.text(text))
         this.$on('formula:enter', () => this.selection.current.focus())
 
-        this.$subscribe(state => console.log('Table state: ', state))
+        // this.$subscribe(state => console.log('Table state: ', state))
     }
 
     selectCell($cell) {
@@ -48,8 +49,7 @@ export class Table extends ExcelComponent {
     async resizeTable(event) {
         try {
             const data = await tableResizeHandler(this.$root, event)
-            this.$dispatch({type: 'TABLE_RESIZE', data})
-            console.log(data)
+            this.$dispatch(actions.tableResize(data))
         } catch (e) {
             console.error('Resize error: ', e.message)
         }
