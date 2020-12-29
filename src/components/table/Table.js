@@ -36,6 +36,9 @@ export class Table extends ExcelComponent {
             this.selection.current.text(text)
             this.updateTextStore(text)
         })
+        this.$on('toolbar:applyStyle', style => {
+            this.selection.applyStyle(style)
+        })
     }
 
     selectCell($cell) {
