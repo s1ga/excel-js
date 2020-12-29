@@ -36,8 +36,6 @@ export class Table extends ExcelComponent {
             this.selection.current.text(text)
             this.updateTextStore(text)
         })
-
-        // this.$subscribe(state => console.log('Table state: ', state))
     }
 
     selectCell($cell) {
