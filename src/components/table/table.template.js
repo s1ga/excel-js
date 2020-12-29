@@ -8,16 +8,18 @@ const DEFAULT_HEIGHT = 24
 
 function createCell(state, row) {
     return function(_, col) {
-        const width = getWidth(state, col)
+        const id = `${row}:${col}`
+        const width = getWidth(state.colState, col)
+        const data = state.dataState[id]
         return `
             <div 
                 class="excel__table__row__data__cell" 
-                data-id="${row}:${col}" 
+                data-id="${id}" 
                 data-type="cell"
                 data-col="${col}" 
                 style="width: ${width}"
                 contenteditable="true"
-             ></div>
+             >${data || ''}</div>
         `
     }
 }
@@ -82,7 +84,7 @@ export function createTable(rowsCount = 15, state = {}) {
     for (let row = 1; row <= rowsCount; row++) {
         const cells = new Array(colsCount)
             .fill('')
-            .map(createCell(state.colState, row))
+            .map(createCell(state, row))
             .join('')
         rows.push(createRow(row, cells, state.rowState))
     }
