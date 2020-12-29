@@ -45,8 +45,9 @@ export function tableResizeHandler($root, event) {
             }
 
             resolve({
+                id: $parent.data[resize],
                 value,
-                id: resize === 'col' ? $parent.data.col : null
+                resize
             })
 
             $resizer.css({
