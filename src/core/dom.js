@@ -98,9 +98,11 @@ class Dom {
             .forEach(key => this.$el.style[key] = styles[key])
     }
 
+    // res = undefined problem
     getStyles(styles = []) {
         return styles.reduce((res, s) => {
             res[s] = this.$el.style[s]
+            return res
         }, {})
     }
 

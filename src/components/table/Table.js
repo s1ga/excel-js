@@ -5,6 +5,7 @@ import {TableSelection} from '@/components/table/TableSelection'
 import {matrix, nextSelector} from '@/components/table/table.functions'
 import {$} from '@core/dom'
 import * as actions from '@/store/actions'
+import {defaultStyles} from '@/constants';
 
 export class Table extends ExcelComponent {
     static className = 'excel__table'
@@ -36,14 +37,22 @@ export class Table extends ExcelComponent {
             this.selection.current.text(text)
             this.updateTextStore(text)
         })
-        this.$on('toolbar:applyStyle', style => {
-            this.selection.applyStyle(style)
+        this.$on('toolbar:applyStyle', value => {
+            console.log(value)
+            console.log(this.selection.selectedIds)
+            this.selection.applyStyle(value)
+            this.$dispatch(actions.applyStyle({
+                value,
+                ids: this.selection.selectedIds
+            }))
         })
     }
 
     selectCell($cell) {
         this.selection.select($cell)
         this.$emit('table:select', $cell)
+        const styles = $cell.getStyles(Object.keys(defaultStyles))
+        this.$dispatch(actions.changeStyles(styles))
     }
 
     async resizeTable(event) {
