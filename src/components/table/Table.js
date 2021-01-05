@@ -5,7 +5,7 @@ import {TableSelection} from '@/components/table/TableSelection'
 import {matrix, nextSelector} from '@/components/table/table.functions'
 import {$} from '@core/dom'
 import * as actions from '@/store/actions'
-import {defaultStyles} from '@/constants';
+import {defaultStyles} from '@/constants'
 
 export class Table extends ExcelComponent {
     static className = 'excel__table'
