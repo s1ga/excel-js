@@ -6,6 +6,7 @@ import {matrix, nextSelector} from '@/components/table/table.functions'
 import {$} from '@core/dom'
 import * as actions from '@/store/actions'
 import {defaultStyles} from '@/constants'
+import {parse} from '@/core/parse'
 
 export class Table extends ExcelComponent {
     static className = 'excel__table'
@@ -33,13 +34,13 @@ export class Table extends ExcelComponent {
         this.selectCell($startCell)
 
         this.$on('formula:enter', () => this.selection.current.focus())
-        this.$on('formula:input', text => {
-            this.selection.current.text(text)
-            this.updateTextStore(text)
+        this.$on('formula:input', value => {
+            this.selection.current
+                .attr('data-value', value)
+                .text(parse(value))
+            this.updateTextStore(value)
         })
         this.$on('toolbar:applyStyle', value => {
-            console.log(value)
-            console.log(this.selection.selectedIds)
             this.selection.applyStyle(value)
             this.$dispatch(actions.applyStyle({
                 value,
@@ -72,7 +73,10 @@ export class Table extends ExcelComponent {
     }
 
     onInput(event) {
-        this.updateTextStore($(event.target).text())
+        const value = $(event.target).text()
+        this.selection.current.attr('data-value', value)
+        this.selection.current.text(parse(value))
+        this.updateTextStore(value)
     }
 
     async onMousedown(event) {
