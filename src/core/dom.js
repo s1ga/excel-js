@@ -3,6 +3,14 @@ class Dom {
         this.$el = typeof selector === 'string' ? document.querySelector(selector) : selector
     }
 
+    attr(name, value) {
+        if (value || value === '') {
+            this.$el.setAttribute(name, value)
+            return this
+        }
+        return this.$el.getAttribute(name)
+    }
+
     html(html) {
         if (typeof html === 'string') {
             this.$el.innerHTML = html
@@ -35,7 +43,7 @@ class Dom {
     }
 
     text(text) {
-        if (typeof text === 'string') {
+        if (typeof text !== 'undefined') {
             this.$el.textContent = text
             return this
         }
@@ -96,6 +104,13 @@ class Dom {
         Object
             .keys(styles)
             .forEach(key => this.$el.style[key] = styles[key])
+    }
+
+    getStyles(styles = []) {
+        return styles.reduce((res, s) => {
+            res[s] = this.$el.style[s]
+            return res
+        }, {})
     }
 
     clear() {

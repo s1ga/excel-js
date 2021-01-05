@@ -1,9 +1,12 @@
-import {ExcelComponent} from '@core/ExcelComponent';
-import {createTable} from '@/components/table/table.template';
-import {tableResizeHandler} from '@/components/table/table.resize';
-import {TableSelection} from '@/components/table/TableSelection';
-import {matrix, nextSelector} from '@/components/table/table.functions';
-import {$} from '@core/dom';
+import {ExcelComponent} from '@core/ExcelComponent'
+import {createTable} from '@/components/table/table.template'
+import {tableResizeHandler} from '@/components/table/table.resize'
+import {TableSelection} from '@/components/table/TableSelection'
+import {matrix, nextSelector} from '@/components/table/table.functions'
+import {$} from '@core/dom'
+import * as actions from '@/store/actions'
+import {defaultStyles} from '@/constants'
+import {parse} from '@/core/parse'
 
 export class Table extends ExcelComponent {
     static className = 'excel__table'
@@ -17,7 +20,7 @@ export class Table extends ExcelComponent {
     }
 
     toHTML() {
-        return createTable()
+        return createTable(20, this.store.getState())
     }
 
     prepare() {
@@ -30,32 +33,64 @@ export class Table extends ExcelComponent {
         const $startCell = this.$root.find('[data-id="1:0"]')
         this.selectCell($startCell)
 
-        this.$on('formula:input', text => this.selection.current.text(text))
         this.$on('formula:enter', () => this.selection.current.focus())
+        this.$on('formula:input', value => {
+            this.selection.current
+                .attr('data-value', value)
+                .text(parse(value))
+            this.updateTextStore(value)
+        })
+        this.$on('toolbar:applyStyle', value => {
+            this.selection.applyStyle(value)
+            this.$dispatch(actions.applyStyle({
+                value,
+                ids: this.selection.selectedIds
+            }))
+        })
     }
 
     selectCell($cell) {
         this.selection.select($cell)
         this.$emit('table:select', $cell)
+        const styles = $cell.getStyles(Object.keys(defaultStyles))
+        this.$dispatch(actions.changeStyles(styles))
+    }
+
+    async resizeTable(event) {
+        try {
+            const data = await tableResizeHandler(this.$root, event)
+            this.$dispatch(actions.tableResize(data))
+        } catch (e) {
+            console.error('Resize error: ', e.message)
+        }
+    }
+
+    updateTextStore(value) {
+        this.$dispatch(actions.changeText({
+            id: this.selection.current.id(),
+            value
+        }))
     }
 
     onInput(event) {
-        this.$emit('table:input', $(event.target).text())
+        const value = $(event.target).text()
+        this.selection.current.attr('data-value', value)
+        this.selection.current.text(parse(value))
+        this.updateTextStore(value)
     }
 
-    onMousedown(event) {
+    async onMousedown(event) {
         const eventType = event.target.dataset.type
-        const resize = event.target.dataset.resize
 
-        if (resize) {
-            tableResizeHandler(resize, this.$root, event)
+        if (event.target.dataset.resize) {
+            await this.resizeTable(event)
         } else if (eventType === 'cell') {
             const $target = $(event.target)
             if (event.shiftKey) {
                 const $cells = matrix($target, this.selection.current).map(id => this.$root.find(`[data-id="${id}"]`))
                 this.selection.selectGroup($cells)
             } else {
-                this.selection.select($target)
+                this.selectCell($target)
             }
         }
     }
