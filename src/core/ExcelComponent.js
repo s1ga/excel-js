@@ -43,7 +43,7 @@ export class ExcelComponent extends DOMListener {
     remove() {
         this.removeDOMListeners()
         this.unsubs.forEach(unsub => unsub())
-        this.storeSub.unsubscribe()
+        // this.storeSub.unsubscribe()
     }
 
     // return component template
