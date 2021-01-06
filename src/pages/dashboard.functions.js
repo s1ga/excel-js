@@ -1,8 +1,17 @@
-function toHTML() {
+import {storage} from '@core/utils'
+
+function getDate(ms) {
+    const date = new Date(+ms)
+    return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`.toLocaleString()
+}
+
+function toHTML(value) {
+    const param = value.split(':')[1]
+    const date = getDate(param)
     return `
         <li class="db__table__list__record">
-            <a href="#">Таблица №1</a>
-            <strong>12.06.2020</strong>
+            <a href="#excel/${param}">${storage(value).title}</a>
+            <strong>${date}</strong>
         </li>
     `
 }
