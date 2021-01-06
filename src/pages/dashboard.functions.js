@@ -1,17 +1,15 @@
 import {storage} from '@core/utils'
 
-function getDate(ms) {
-    const date = new Date(+ms)
-    return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`.toLocaleString()
-}
-
 function toHTML(value) {
+    const model = storage(value)
     const param = value.split(':')[1]
-    const date = getDate(param)
     return `
         <li class="db__table__list__record">
-            <a href="#excel/${param}">${storage(value).title}</a>
-            <strong>${date}</strong>
+            <a href="#excel/${param}">${model.title}</a>
+            <strong>
+                ${new Date(model.lastUpdate).toLocaleDateString()}
+                ${new Date(model.lastUpdate).toLocaleTimeString()}
+            </strong>
         </li>
     `
 }

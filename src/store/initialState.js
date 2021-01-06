@@ -5,8 +5,9 @@ const defaultState = {
     colState: {},
     dataState: {},
     stylesState: {},
-    currentStyles: defaultStyles,
     currentText: '',
+    lastUpdate: new Date().toJSON(),
+    currentStyles: defaultStyles,
     title: defaultTitle
 }
 
