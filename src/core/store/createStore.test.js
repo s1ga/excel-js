@@ -12,7 +12,8 @@ const reducer = (state = initialState, action) => {
 }
 
 describe('createStore:', () => {
-    let store, handler
+    let store
+    let handler
     beforeEach(() => {
         store = createStore(reducer, initialState)
         handler = jest.fn()
