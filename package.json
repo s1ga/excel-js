@@ -4,6 +4,8 @@
   "description": "JavaScript advanced application",
   "main": "webpack.config.js",
   "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
     "start": "cross-env NODE_ENV=development webpack serve --open Chrome",
     "build": "cross-env NODE_ENV=production webpack --mode production",
     "lint": "npx eslint ./src"
@@ -37,6 +39,7 @@
     "eslint-config-google": "^0.14.0",
     "eslint-loader": "^4.0.2",
     "html-webpack-plugin": "^4.5.0",
+    "jest": "^26.6.3",
     "mini-css-extract-plugin": "^1.3.1",
     "sass": "^1.29.0",
     "sass-loader": "^10.1.0",
@@ -46,6 +49,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
+    "eslint-plugin-jest": "^24.1.3",
     "normalize.css": "^8.0.1"
   }
 }
